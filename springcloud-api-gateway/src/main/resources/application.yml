@@ -1,0 +1,25 @@
+server:
+  port: 9005
+
+spring:
+  application:
+    name: springcloud-api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: gateway_1
+          uri: https://qq.com
+          predicates:
+            - Path=/go
+
+        - id: gateway_2
+          uri: https://baidu.com
+          predicates:
+            - Path=/do/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9999/eureka/
+
+

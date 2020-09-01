@@ -1,0 +1,42 @@
+server:
+  port: 9003
+
+spring:
+  application:
+    name: springcloud-comsumer
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9999/eureka/
+
+# feign开启服务熔断
+feign:
+  hystrix:
+    enabled: true
+
+# 超时时间配置
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 5000
+
+# hystrix超时配置
+#  注意ribbon有超时时间设置，ribbon默认超时也是1秒,
+#  feign也有超时时间配置默认是1秒,
+#  而feign的底层封装的就是ribbon,因此要想feign的超时时间生效,
+#  那么ribbon的超时时间要大于hystrix的超时时间，否则 hystrix自定义的超时时间毫无意义。
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2000
+
+#  在被监控的服务上添加暴露点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+#       include: '*'   #'*'代表开放所有端点。
